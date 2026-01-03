@@ -1,23 +1,633 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
-    </nav>
+
+    <!-- JSON-LD Structured Data for Service Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "오피스텔 이사 서비스",
+      "provider": {
+        "@type": "Organization",
+        "name": "오피스텔 이사 전문 업체",
+        "url": "https://yourdomain.com",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+82-10-1234-5678",
+          "contactType": "고객 서비스"
+        }
+      },
+      "areaServed": {
+        "@type": "State",
+        "name": "대한민국 전역"
+      },
+      "description": "오피스텔 포장 이사 및 원룸 이사 비용을 포함한 합리적인 이사 서비스를 제공합니다.",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "오피스텔 이사 가격",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "오피스텔 포장이사"
+            },
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "500000",
+              "priceCurrency": "KRW",
+              "description": "전문 인력이 모든 포장, 운송, 정리 과정을 전담하는 서비스"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "오피스텔 반포장이사"
+            },
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "300000",
+              "priceCurrency": "KRW",
+              "description": "큰 짐 포장 및 운송만 전문가에게 맡기고 비용 절약"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "원룸 일반이사"
+            },
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "150000",
+              "priceCurrency": "KRW",
+              "description": "소량 짐 운송 및 고객 직접 포장/정리 서비스"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+
+    <style>
+      /* --- Global Styles --- */
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.8; /* Increased line height for better readability */
+        background-color: #f5f7fa; /* Light, soft background color */
+        color: #333;
+      }
+      a {
+        text-decoration: none;
+        color: #007bff; /* Standard blue link color */
+        transition: color 0.3s ease;
+      }
+      a:hover {
+        color: #0056b3;
+      }
+      main {
+        max-width: 1000px; /* Wider content area */
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      /* --- Header and Navigation --- */
+      header {
+        background-color: #ffffff;
+        border-bottom: 2px solid #e0e0e0;
+        padding: 1.5rem 0;
+      }
+      .header-container {
+        max-width: 1000px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+      }
+      header h1 {
+        color: #2c3e50; /* Darker header text */
+        font-size: 1.8rem;
+        margin: 0;
+      }
+      nav ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0;
+      }
+      nav a {
+        color: #555;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 5px 0;
+      }
+      nav a:hover {
+        color: #007bff;
+        border-bottom: 2px solid #007bff;
+      }
+
+      /* --- Section Styling --- */
+      section {
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Soft shadow for depth */
+        margin-bottom: 2rem;
+      }
+      h2 {
+        color: #007bff; /* Accent color for main headings */
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        font-size: 2rem;
+      }
+      h3 {
+        color: #34495e; /* Subheading color */
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+      p {
+        color: #444;
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+
+      /* --- Content Components --- */
+      .highlight {
+        font-weight: 700;
+        color: #d35400; /* Orange highlight color for keywords */
+      }
+      .info-box {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border: 1px solid #e9ecef;
+      }
+      .info-box strong {
+        color: #2c3e50;
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      /* --- Table Styling --- */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+      }
+      th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      th {
+        background-color: #f0f4f7; /* Light blue-grey header background */
+        font-weight: 700;
+        color: #34495e;
+      }
+      tr:nth-child(even) {
+        background-color: #fcfcfc;
+      }
+
+      /* --- Accordion (FAQ) Styling --- */
+      dl {
+        margin-top: 1rem;
+      }
+      dl dt {
+        background-color: #f0f4f7;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-top: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #2c3e50;
+        position: relative;
+        transition: background-color 0.3s ease;
+      }
+      dl dt:hover {
+        background-color: #e0eaf3;
+      }
+      dl dt::after {
+        content: '+';
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+      }
+      dl dt.active::after {
+        content: '-';
+        transform: translateY(-50%) rotate(0deg);
+      }
+      dl dd {
+        margin-left: 0;
+        margin-bottom: 1rem;
+        padding: 1.5rem;
+        border-left: 3px solid #007bff;
+        background-color: #ffffff;
+        border-radius: 0 0 8px 8px;
+        display: none;
+      }
+      dl dt.active + dd {
+        display: block;
+      }
+
+      /* --- Keyword Tags --- */
+      .keyword-tags {
+        margin: 1.5rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        border: 1px solid #e0e0e0;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #fcfcfc;
+      }
+      .keyword-tags a {
+        background-color: #e0f0ff;
+        color: #007bff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        white-space: nowrap;
+      }
+      .keyword-tags a:hover {
+        background-color: #b3d1ff;
+      }
+
+      /* --- Call to Action Button --- */
+      .cta-button {
+        display: block;
+        width: 100%;
+        max-width: 300px; /* Limit button width */
+        background-color: #28a745; /* Green for call to action */
+        color: white;
+        font-weight: 700;
+        padding: 1rem;
+        border-radius: 50px;
+        text-align: center;
+        margin: 2rem auto;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+      .cta-button:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+      }
+
+      /* --- Form Styling --- */
+      .form-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #555;
+      }
+      input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+        padding: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        grid-column: 1 / -1; /* Full width for submit button */
+      }
+      button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      /* --- Footer --- */
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        font-size: 0.9rem;
+        color: #777;
+        background-color: #ffffff;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 2rem;
+      }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>오피스텔 이사 비용 전문 가이드</h1>
+            <nav>
+                <ul>
+                    <li><a href="#intro">서비스 소개</a></li>
+                    <li><a href="#cost-analysis">비용 분석</a></li>
+                    <li><a href="#guide">이사 절차</a></li>
+                    <li><a href="#faq">자주 묻는 질문</a></li>
+                    <li><a href="#contact">견적 문의</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
     <main>
-      <h1>Home page</h1>
+        <!-- Section 1: Introduction -->
+        <section id="intro">
+            <h2>오피스텔 포장 이사 비용, 합리적으로 절약하는 방법</h2>
+            <p><strong>오피스텔 이사</strong>를 앞두고 계신가요? 1인 가구, 신혼부부 등 소규모 가구에 최적화된 주거 형태인 오피스텔은 일반 아파트 이사와는 다른 특징을 가지고 있습니다. 좁은 복도, 승강기 사용 제한, 주차 문제 등 오피스텔 특유의 환경 때문에 이사 비용이 예상보다 높게 책정되거나 서비스 만족도가 떨어지는 경우가 많습니다. 저희는 이러한 문제점을 해결하고, <span class="highlight">오피스텔 포장 이사 비용</span>을 투명하게 공개하며 고객 맞춤형 솔루션을 제공하는 전문 업체입니다. <strong>2026년 최신 데이터</strong>를 바탕으로 합리적인 이사 비용을 산출하고, 꼼꼼한 서비스로 고객님의 만족도를 높여드립니다.</p>
+
+            <div class="info-box">
+                <strong>잠깐, 오피스텔 이사가 일반 이사와 다른 점은?</strong>
+                <p>오피스텔은 대부분 승강기를 이용해야 하며, 승강기 이용 시 관리사무소에 사전 예약이 필수입니다. 또한, 주차 공간이 협소하여 큰 이사 차량의 진입이 어렵거나, 짐을 운반하는 거리가 길어질 수 있습니다. 이러한 특이사항을 고려하여 견적을 내야 정확한 <span class="highlight">이사 비용</span>을 예측할 수 있습니다.</p>
+            </div>
+
+            <p>이 페이지에서는 <span class="highlight">오피스텔 포장이사 비용</span>을 결정하는 핵심 요소들을 분석하고, <span class="highlight">원룸 이사 비용</span> 및 <span class="highlight">반포장이사 비용</span>을 비교하여 고객님께 가장 적합한 이사 방법을 찾아드립니다. 또한, <span class="highlight">이사 견적</span> 비교를 통해 불필요한 지출을 줄이고, 안심하고 이사를 진행할 수 있도록 전문적인 정보들을 담았습니다.</p>
+
+            <div class="keyword-tags" aria-label="연관 키워드">
+                <a href="#cost-factors">오피스텔 이사 비용</a>
+                <a href="#service-types">원룸 포장이사 비용</a>
+                <a href="#service-types">오피스텔 반포장이사</a>
+                <a href="#guide">이사 준비 체크리스트</a>
+                <a href="#cost-analysis">이사 견적 비교</a>
+                <a href="#faq">이사 업체 선정 기준</a>
+                <a href="#area">지역별 이사 비용</a>
+            </div>
+        </section>
+
+        <!-- Section 2: Service Types for Officetel Moving -->
+        <section id="service-types">
+            <h2>오피스텔 이사 서비스 종류: 포장이사 vs. 반포장이사 vs. 일반이사</h2>
+            <p>오피스텔 이사는 짐의 양이 비교적 적기 때문에 고객의 선호도에 따라 다양한 형태로 진행됩니다. 특히 <span class="highlight">오피스텔 포장이사</span>와 <span class="highlight">반포장이사</span> 중 어떤 것을 선택하느냐에 따라 비용과 편의성이 크게 달라집니다.</p>
+
+            <h3>1. 오피스텔 포장이사 (Full Packing Service)</h3>
+            <div class="info-box">
+                <p><strong>특징:</strong> 짐 포장부터 운송, 정리, 청소까지 모든 과정을 전문 인력이 전담합니다. 이사 당일 고객님께서는 새집으로 편안하게 이동하여 정리된 환경을 맞이할 수 있습니다. 바쁜 직장인이나 짐이 많은 2인 가구 오피스텔에 적합합니다.</p>
+                <p><strong>비용:</strong> 일반 이사 대비 가장 높은 비용이 발생하지만, 시간과 노동력을 절약할 수 있습니다.</p>
+            </div>
+
+            <h3>2. 오피스텔 반포장이사 (Semi-Packing Service)</h3>
+            <div class="info-box">
+                <p><strong>특징:</strong> 포장 과정은 전문가가 진행하고, 짐 정리(잔짐 풀기)는 고객이 직접 합니다. 포장 비용을 절감하면서도 짐을 안전하게 운반할 수 있어, <span class="highlight">오피스텔 반포장이사 비용</span>을 절약하려는 고객님께 인기가 높습니다.</p>
+                <p><strong>비용:</strong> 포장이사와 일반이사 사이의 중간 비용이 발생합니다.</p>
+            </div>
+
+            <h3>3. 오피스텔 일반이사 (Self-Packing Service)</h3>
+            <div class="info-box">
+                <p><strong>특징:</strong> 모든 짐의 포장과 정리를 고객이 직접 처리하고, 전문 인력은 운송 및 배치만 담당합니다. 짐이 적고 이사 경험이 많은 1인 가구에 적합하며, <span class="highlight">원룸 이사 비용</span>을 최소화할 수 있습니다.</p>
+                <p><strong>비용:</strong> 가장 저렴한 비용으로 이사가 가능하지만, 고객의 노동력 투입이 많습니다.</p>
+            </div>
+        </section>
+
+        <!-- Section 3: Detailed Cost Analysis -->
+        <section id="cost-analysis">
+            <h2>오피스텔 포장 이사 비용 분석: 2026년 이사 비용 결정 요인</h2>
+            <p><strong>오피스텔 이사 비용</strong>은 단순히 짐의 양이나 거리만으로 결정되지 않습니다. 다양한 요인들이 복합적으로 작용하므로, 정확한 견적을 받기 위해서는 다음 요인들을 꼼꼼하게 점검해야 합니다.</p>
+
+            <h3>1. 이사 날짜 및 시기</h3>
+            <p>이사 수요가 몰리는 <span class="highlight">손 없는 날</span>(길일)이나 주말, 2~3월 이사 성수기는 이사 비용이 평일 비수기 대비 20~30% 이상 증가할 수 있습니다. <strong>오피스텔 이사 비용</strong>을 절약하고 싶다면 가능한 평일 비수기를 이용하는 것이 좋습니다. 2026년의 이사 성수기 및 손 없는 날을 미리 확인하여 계획을 세우는 것이 중요합니다.</p>
+
+            <h3>2. 이사 거리 및 짐의 양 (작업량)</h3>
+            <p>이사 거리가 멀어질수록 유류비, 인건비, 통행료 등이 증가하여 전체 비용이 상승합니다. 또한, 오피스텔 이사라 하더라도 짐의 양이 많아지면 더 많은 인력이나 차량이 필요하므로 비용이 증가합니다. 짐이 예상보다 많을 경우 <span class="highlight">반포장이사 비용</span>도 증가할 수 있습니다.</p>
+
+            <h3>3. 작업 환경 (엘리베이터 유무 및 사다리차)</h3>
+            <p>오피스텔 이사에서 가장 중요한 변수입니다. 대부분의 오피스텔은 엘리베이터가 있지만, 엘리베이터 사용 시간이 제한되거나 예약이 필수인 경우가 많습니다. 만약 엘리베이터 사용이 불가능하거나 이사 경로가 복잡하면 <span class="highlight">사다리차 비용</span>이 추가될 수 있습니다. 사다리차 이용 비용은 층수와 작업 난이도에 따라 달라집니다.</p>
+
+            <h3>4. 추가 서비스 및 옵션</h3>
+            <p>에어컨, 벽걸이 TV 설치/해체, 붙박이장 분해/조립, 고가 미술품 운송 등 특수 작업이 필요한 경우 <span class="highlight">오피스텔 포장이사 비용</span>에 추가 요금이 발생합니다. 이사 견적 시 이러한 추가 옵션을 명확히 알려주셔야 정확한 견적을 받을 수 있습니다.</p>
+
+            <h3>5. 이사 업체 규모 및 전문성</h3>
+            <p>브랜드 이사 업체는 서비스 표준화가 잘 되어 있지만 비용이 상대적으로 높을 수 있습니다. 반면, 소규모 <span class="highlight">용달 이사</span> 업체는 비용이 저렴하지만 서비스의 질이 불균일할 수 있습니다. <span class="highlight">오피스텔 포장이사</span>는 꼼꼼한 서비스가 중요하므로, 무조건 저렴한 업체보다는 전문성이 검증된 곳을 선택해야 합니다.</p>
+
+            <div class="info-box">
+                <strong>[2026년 오피스텔 포장이사 예상 비용 비교]</strong>
+                <p>다음 표는 짐의 양과 서비스 유형에 따른 대략적인 <span class="highlight">오피스텔 이사 비용</span>을 비교한 자료입니다. 정확한 견적은 방문 상담을 통해 확인해주세요.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>짐의 양</th>
+                            <th>서비스 유형</th>
+                            <th>예상 비용 (시작가, KRW)</th>
+                            <th>특징</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1인 가구 (소량)</td>
+                            <td>원룸 일반이사</td>
+                            <td>150,000 ~ 300,000</td>
+                            <td>고객 직접 포장 및 정리</td>
+                        </tr>
+                        <tr>
+                            <td>1인 가구 (중량)</td>
+                            <td>오피스텔 반포장이사</td>
+                            <td>300,000 ~ 500,000</td>
+                            <td>전문가 포장, 고객 정리</td>
+                        </tr>
+                        <tr>
+                            <td>1~2인 가구</td>
+                            <td>오피스텔 포장이사</td>
+                            <td>500,000 ~ 800,000</td>
+                            <td>모든 과정 전문가 전담</td>
+                        </tr>
+                        <tr>
+                            <td>짐 보관 이사</td>
+                            <td>보관 이사 (추가 비용 발생)</td>
+                            <td>별도 협의</td>
+                            <td>짐 보관 기간 및 물량에 따라 변동</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 4: Officetel Moving Guide and Trust Signals -->
+        <section id="guide">
+            <h2>오피스텔 이사 전문가가 알려주는 꼼꼼한 이사 준비 가이드</h2>
+            <p>성공적인 이사는 철저한 준비에서 시작됩니다. <span class="highlight">오피스텔 이사</span>를 처음 하거나 바쁜 일정 때문에 걱정이 많다면, 다음 가이드를 참고하여 이사 준비를 진행해 보세요. 이사 전 체크리스트를 통해 누락되는 부분 없이 완벽하게 준비할 수 있습니다.</p>
+
+            <h3>1. 이사 업체 선정 전 점검 사항</h3>
+            <p>이사 업체를 선정할 때는 단순히 <span class="highlight">이사 비용</span>이 저렴한 곳을 고르기보다, 다음 사항들을 확인하는 것이 중요합니다. 특히 <span class="highlight">오피스텔 이사</span>는 소규모지만, 짐을 다루는 세심함이 필요합니다.</p>
+            <ul>
+                <li><strong>정식 허가 여부 확인:</strong> 관할 시청에 등록된 정식 업체인지 확인합니다. (참고: <a href="https://www.move.go.kr" target="_blank">이사화물운송주선사업자 정보 확인 (국토교통부)</a>)</li>
+                <li><strong>피해보상보험 가입 여부:</strong> 이사 중 짐 파손 시 피해보상을 받을 수 있는지 확인합니다.</li>
+                <li><strong>방문 견적 필수:</strong> 전화 견적만으로는 정확한 <span class="highlight">오피스텔 포장이사 비용</span>을 알기 어렵습니다. 반드시 방문 견적을 받아 짐의 양, 특이사항을 명확히 전달해야 합니다.</li>
+            </ul>
+
+            <h3>2. 이사 전 준비 체크리스트</h3>
+            <p>이사 2주 전부터 다음 사항들을 미리 처리하면 이사 당일 혼란을 줄일 수 있습니다.</p>
+            <ul>
+                <li><strong>주차 및 승강기 사용 예약:</strong> 오피스텔 관리실에 연락하여 엘리베이터 사용 가능 시간 및 주차 공간을 예약합니다. (필수 사항)</li>
+                <li><strong>짐 분류 및 정리:</strong> 이사할 짐과 버릴 짐을 구분하여 폐기물을 미리 처리합니다.</li>
+                <li><strong>각종 주소 변경 신고:</strong> 전입신고, 우편물 주소 변경, 공과금 명의 변경 등을 미리 처리합니다.</li>
+                <li><strong>가구 및 가전 분해 여부 확인:</strong> 분해/조립이 필요한 가구가 있다면 견적 시 미리 알려주세요.</li>
+            </ul>
+
+            <h3>3. 이사 당일 진행 과정</h3>
+            <p><strong>오피스텔 포장이사</strong>의 경우, 다음과 같은 순서로 진행됩니다. 고객님께서는 이사 과정을 확인하며 전문가의 손길을 지켜보시면 됩니다.</p>
+            <ol>
+                <li><strong>포장 작업:</strong> 주방 짐, 의류, 가전 등 품목별 전문 포장재를 사용하여 꼼꼼하게 포장합니다.</li>
+                <li><strong>운송 및 운반:</strong> 오피스텔 환경에 맞춰 짐을 안전하게 운반 차량에 싣습니다.</li>
+                <li><strong>짐 정리 및 배치:</strong> 새 오피스텔에 도착하여 고객의 요청에 따라 짐을 배치하고 정리합니다.</li>
+                <li><strong>마무리 청소 및 점검:</strong> 가벼운 마무리 청소(바닥 쓸기, 닦기) 후 고객님과 함께 짐의 배치 상태를 최종 확인합니다.</li>
+            </ol>
+            <p>이사 서비스 과정에서 궁금한 점이 있다면 언제든지 현장 직원에게 문의하여 진행 상황을 점검할 수 있습니다.</p>
+            <div class="info-box">
+                <strong>[이사 관련 추가 정보]</strong>
+                <p><strong>주택임대차보호법:</strong> 이사 후 전입신고를 통해 거주지의 법적 보호를 받으세요. (<a href="https://www.law.go.kr/법령/주택임대차보호법" target="_blank">국가법령정보센터</a>)</p>
+                <p><strong>폐가전 무상 방문 수거:</strong> 이사 시 발생하는 폐가전은 지자체 서비스를 이용해 처리할 수 있습니다. (<a href="https://www.15990903.or.kr" target="_blank">한국전자제품자원순환공제조합</a>)</p>
+            </div>
+        </section>
+
+        <!-- Section 5: National Service Area and Related Keywords -->
+        <section id="area">
+            <h2>전국 오피스텔 이사 서비스 가능 지역 (Feat. 지역별 검색 키워드)</h2>
+            <p>저희는 서울, 경기, 인천 수도권을 넘어 전국 주요 광역시 및 도시에서 <strong>오피스텔 포장이사</strong> 서비스를 제공하고 있습니다. 각 지역별로 특화된 이사 전문가들이 배치되어 신속한 이사 서비스를 보장합니다. 아래는 <span class="highlight">오피스텔 포장 이사 비용</span> 및 <span class="highlight">원룸 이사 비용</span>으로 많이 검색되는 주요 지역 키워드입니다.</p>
+
+            <h3>수도권 주요 지역</h3>
+            <div class="form-container">
+                <div class="info-box"><strong>서울 지역</strong><p>강남구 오피스텔 이사, 송파구 이사 비용, 마포구 원룸 이사, 강동구 이사 견적, 강서구 포장이사, 영등포구 이사, 서초구 오피스텔 이사, 용산구 반포장이사, 종로구 이사, 중구 이사</p></div>
+                <div class="info-box"><strong>경기 지역</strong><p>수원 오피스텔 이사, 성남 오피스텔 이사 비용, 용인 원룸 이사, 고양시 이사, 부천 오피스텔 이사, 안산 이사 견적, 화성 이사 비용, 남양주 이사, 평택 이사, 의정부 이사, 시흥 이사, 김포 이사, 광주 오피스텔 이사, 광명 이사, 군포 이사, 오산 이사, 양주 이사, 이천 이사, 안성 이사, 파주 이사, 하남 오피스텔 이사</p></div>
+                <div class="info-box"><strong>인천 지역</strong><p>인천 오피스텔 이사, 부평구 이사 비용, 연수구 포장이사, 서구 이사</p></div>
+            </div>
+
+            <h3>광역시 및 지방 주요 지역</h3>
+            <div class="form-container">
+                <div class="info-box"><strong>부산/경남 지역</strong><p>부산 오피스텔 이사, 해운대구 이사, 창원 이사, 김해 원룸 이사</p></div>
+                <div class="info-box"><strong>대구/경북 지역</strong><p>대구 오피스텔 이사, 수성구 이사 비용, 구미 이사</p></div>
+                <div class="info-box"><strong>대전/충청 지역</strong><p>대전 오피스텔 이사, 세종시 이사, 천안 이사, 청주 이사</p></div>
+                <div class="info-box"><strong>광주/전라 지역</strong><p>광주 오피스텔 이사, 전주 이사</p></div>
+                <div class="info-box"><strong>울산 지역</strong><p>울산 오피스텔 이사</p></div>
+                <div class="info-box"><strong>강원/제주 지역</strong><p>강릉 이사, 제주도 오피스텔 이사</p></div>
+            </div>
+        </section>
+
+        <!-- Section 6: User Engagement - FAQ and Quote Form -->
+        <section id="faq">
+            <h2>자주 묻는 질문 (FAQ): 오피스텔 이사 궁금증 해소</h2>
+            <dl>
+                <dt tabindex="0" aria-expanded="false" class="accordion-trigger">오피스텔 포장 이사 비용은 왜 원룸 이사보다 비싼가요?</dt>
+                <dd>오피스텔은 원룸보다 짐의 양이 많고, 가구 구조가 복잡한 경우가 많습니다. 또한, 승강기 사용 제한 및 주차 환경 등 이사 환경적인 변수가 많아 추가 작업 시간이나 인력이 필요할 수 있습니다. <span class="highlight">원룸 포장이사 비용</span>보다 <span class="highlight">오피스텔 포장이사 비용</span>이 높게 책정되는 이유입니다. 정확한 비용은 짐의 양과 특이사항에 따라 달라지므로, 전문가와 상담을 통해 확인하는 것이 좋습니다.</dd>
+                <dt tabindex="0" aria-expanded="false" class="accordion-trigger">오피스텔 이사 견적을 받을 때 주의할 점이 있나요?</dt>
+                <dd>가장 중요한 것은 '방문 견적'입니다. 전화나 온라인으로 대략적인 견적을 받을 수 있지만, 짐의 양이나 오피스텔 환경(주차, 엘리베이터)을 정확히 파악해야 추가 요금 발생을 막을 수 있습니다. 또한, 계약서에 이사 날짜, 비용, 서비스 내용(보험 포함 여부)을 명확히 기재해야 합니다.</dd>
+                <dt tabindex="0" aria-expanded="false" class="accordion-trigger">이사 당일 오피스텔 승강기 사용료는 누가 부담하나요?</dt>
+                <dd>대부분의 오피스텔은 승강기 사용 시 일정 비용(수수료)이 발생합니다. 이 비용은 고객님께서 직접 관리실에 납부하시는 것이 일반적입니다. 견적 시 이 부분에 대해 미리 문의하고 합의하는 것이 좋습니다. 사전에 관리실에 문의하여 <span class="highlight">오피스텔 이사</span> 시 승강기 사용 규정을 확인해주세요.</dd>
+                <dt tabindex="0" aria-expanded="false" class="accordion-trigger">이사 업체 선정 시 피해야 할 업체 유형이 있나요?</dt>
+                <dd>무조건 최저가만 강조하는 업체, 정식 사업자등록증이 없는 업체, 피해보상보험 가입 여부를 명확히 밝히지 않는 업체는 피하는 것이 좋습니다. 특히 이사 계약 시 구두 약속만 하고 서류상 명시하지 않는 경우 추후 분쟁 발생의 원인이 될 수 있습니다. 신뢰성 있는 <span class="highlight">이사 업체 추천</span>을 받거나, 사전에 온라인 후기를 꼼꼼하게 확인하는 것이 중요합니다.</dd>
+            </dl>
+        </section>
+
+        <section id="contact">
+            <h2>무료 이사 견적 요청하기</h2>
+            <p><strong>오피스텔 이사</strong>는 전문가의 꼼꼼함이 필수입니다. <span class="highlight">오피스텔 포장이사 비용</span>부터 <span class="highlight">반포장이사 비용</span>까지, 고객님의 상황에 맞는 정확한 견적을 무료로 받아보세요. 전문 상담사가 친절하게 안내해 드립니다.</p>
+
+            <form action="#" class="form-container">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" placeholder="이름" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">연락처</label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-xxxx-xxxx" required>
+                </div>
+                <div class="form-group">
+                    <label for="move-type">이사 종류 선택</label>
+                    <select id="move-type" name="move-type" required>
+                        <option value="">이사 종류 선택</option>
+                        <option value="officetel_full">오피스텔 포장이사</option>
+                        <option value="officetel_semi">오피스텔 반포장이사</option>
+                        <option value="officetel_general">원룸 일반이사</option>
+                        <option value="storage">보관이사</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">이사 희망 날짜</label>
+                    <input type="text" id="date" name="date" placeholder="예: 2026년 5월 10일 (주말/평일 기재)" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="address_from">출발지 (오피스텔 주소)</label>
+                    <input type="text" id="address_from" name="address_from" placeholder="상세 주소를 입력해주세요 (예: 서울시 강남구)" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="address_to">도착지 (오피스텔 주소)</label>
+                    <input type="text" id="address_to" name="address_to" placeholder="상세 주소를 입력해주세요 (예: 경기도 성남시)" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="details">추가 요청사항 (짐의 양, 특이사항, 승강기 유무 등)</label>
+                    <textarea id="details" name="details" placeholder="이사할 짐의 대략적인 양이나 특이사항을 알려주시면 정확한 견적에 도움이 됩니다."></textarea>
+                </div>
+                <button type="submit">무료 견적 요청하기</button>
+            </form>
+            <a href="tel:010-1234-5678" class="cta-button">전화로 바로 문의하기</a>
+        </section>
+
+        <!-- Section 7: External Resource Links -->
+        <section>
+            <h2>참고 자료 및 유용한 웹사이트</h2>
+            <ul>
+                <li><strong>국토교통부 이사 정보:</strong> <a href="https://www.move.go.kr" target="_blank">이사화물운송주선사업자 정보 확인</a></li>
+                <li><strong>한국소비자원:</strong> <a href="https://www.kca.go.kr/index.do" target="_blank">이사 서비스 관련 소비자 피해 구제 정보</a></li>
+                <li><strong>네이버 부동산:</strong> <a href="https://land.naver.com" target="_blank">오피스텔 시세 및 정보 확인</a></li>
+                <li><strong>정부24:</strong> <a href="https://www.gov.kr/main?a=go_index" target="_blank">전입신고 및 확정일자 신청</a></li>
+                <li><strong>한국전자제품자원순환공제조합:</strong> <a href="https://www.15990903.or.kr" target="_blank">폐가전 무상 방문 수거 서비스</a></li>
+            </ul>
+        </section>
     </main>
-  </body>
-</html>
+
+    <footer>
+        <p>Copyright &copy; 2026 오피스텔 이사 전문 업체. All Rights Reserved.</p>
+        <p>고객센터: 010-1234-5678 | 이메일: contact@yourdomain.com</p>
+    </footer>
+
+    <!-- Javascript for Accordion functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('dl dt').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    // Toggle active class on trigger itself
+                    trigger.classList.toggle('active');
+
+                    // Set aria-expanded attribute
+                    let expanded = trigger.getAttribute('aria-expanded') === 'true';
+                    trigger.setAttribute('aria-expanded', !expanded);
+                });
+                // Accessibility for keyboard navigation
+                trigger.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        trigger.click();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+  
